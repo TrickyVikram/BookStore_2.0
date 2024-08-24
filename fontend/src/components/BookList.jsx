@@ -4,19 +4,29 @@ import { getBooks, purchaseBook } from '../api/api';
 
 let localData = [
     {
-        "name": "The Alchemist",
-        "title": "The Alchemist follows the journey of an Andalusian shepherd",
+        "id": "1",
+        "title": "The Adventures of Captain Comet",
+        "name": "Science Fiction",
+        "price": 11,
         "category": "Free",
-        "price": 0,
-        "image": "https://images.unsplash.com/photo-1606782866255-1b0b7f1d0b0e"
+        "image": "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg?t=st=1722311756~exp=1722315356~hmac=d7bb0fb4f59fdfb76d1eef9ff64f2a0abf390427e0e6b2b9d6b1acfae22027c5&w=740"
     },
     {
-        "name": "The Alchemist",
-        "title": "The Alchemist follows the journey of an Andalusian shepherd",
+        "id": "2",
+        "title": "The Secret Garden",
+        "name": "Fantasy",
+        "price": 6,
         "category": "Free",
-        "price": 100,
-        "image": "https://images.unsplash.com/photo-1606782866255-1b0b7f1d0b0e"
-    }
+        "image": "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg?t=st=1722311756~exp=1722315356~hmac=d7bb0fb4f59fdfb76d1eef9ff64f2a0abf390427e0e6b2b9d6b1acfae22027c5&w=740"
+    },
+    {
+        "id": "3",
+        "title": "Mastering the Art of French Cooking",
+        "name": "Cooking",
+        "price": 25,
+        "category": "Free",
+        "image": "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg?t=st=1722311756~exp=1722315356~hmac=d7bb0fb4f59fdfb76d1eef9ff64f2a0abf390427e0e6b2b9d6b1acfae22027c5&w=740"
+    },
 ];
 
 const BookList = () => {
@@ -51,11 +61,11 @@ const BookList = () => {
                     <div key={book._id} className="col-md-4 mb-4">
                         <div className="card h-100 shadow-lg border-0 transform hover:scale-105 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 rounded-lg overflow-hidden">
                             <figure className="m-0">
-                                <img 
-                                    src={book.image} 
-                                    alt="Book" 
-                                    className="card-img-top transition-transform duration-300 hover:scale-110" 
-                                    style={{ height: '300px', objectFit: 'cover' }} 
+                                <img
+                                    src={book.image}
+                                    alt="Book"
+                                    className="card-img-top transition-transform duration-300 hover:scale-110"
+                                    style={{ height: '300px', objectFit: 'cover' }}
                                 />
                             </figure>
                             <div className="card-body p-4">
