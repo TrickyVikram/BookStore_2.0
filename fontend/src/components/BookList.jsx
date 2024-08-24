@@ -1,5 +1,7 @@
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
+import 'animate.css/animate.min.css';
+
 
 import React, { useState, useEffect } from 'react';
 import { getBooks, purchaseBook } from '../api/api';
@@ -26,31 +28,36 @@ const BookList = () => {
 
     return (
         <div className="container mt-5">
-            <h2>Book List</h2>
+            <h2 className="mb-4 text-center">Book List</h2>
             <div className="row">
                 {books.map(book => (
                     <div key={book._id} className="col-md-4 mb-4">
-                        <div className="card h-100 bg-base-100 shadow-xl hover:scale-105 duration-200 dark:bg-slate-900 dark:text-white dark:border">
-                            <figure>
-                                <img src={book.image} alt="Book" className="card-img" />
+                        <div className="card h-100 shadow-lg border-0 transform hover:scale-105 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 rounded-lg overflow-hidden">
+                            <figure className="m-0">
+                                <img 
+                                    src={book.image} 
+                                    alt="Book" 
+                                    className="card-img-top transition-transform duration-300 hover:scale-110" 
+                                    style={{ height: '300px', objectFit: 'cover' }} 
+                                />
                             </figure>
-                            <div className="card-body">
-                                <h2 className="card-title">
+                            <div className="card-body p-4">
+                                <h5 className="card-title text-truncate">
                                     {book.name}
-                                    <div className="">{book.category}</div>
-                                </h2>
-                                <p>{book.title}</p>
-                                <div className="">${book.price}</div>
+                                    <span className="badge badge-pill badge-secondary ml-2">{book.category}</span>
+                                </h5>
+                                <p className="card-text text-muted">{book.title}</p>
+                                <div className="mb-3 font-weight-bold">${book.price}</div>
                                 <div className="card-actions mt-3">
                                     <button
-                                        className="btn btn-primary w-100"
+                                        className="btn btn-primary btn-block"
                                         onClick={() => handlePurchase(book._id)}
                                     >
                                         Buy Now
                                     </button>
                                 </div>
                                 {purchasedBookId === book._id && (
-                                    <div className="alert alert-success mt-3" role="alert">
+                                    <div className="alert alert-success mt-3 animate__animated animate__fadeIn" role="alert">
                                         Book purchased successfully!
                                     </div>
                                 )}
