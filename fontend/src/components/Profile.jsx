@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { getProfile } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 
+
+
 const Profile = () => {
     const [profile, setProfile] = useState(null);
     const navigate = useNavigate();
+
+
 
     useEffect(() => {
         getProfile()
@@ -17,6 +21,9 @@ const Profile = () => {
                 navigate('/login'); // Redirect to login page if fetching profile fails
             });
     }, [navigate]);
+
+    // get books in bookId according to all data 
+     //write code
 
     const handleBooksView = (bookId) => {
         if (bookId) {
@@ -77,7 +84,7 @@ const Profile = () => {
                             {profile.purchaseBooks && profile.purchaseBooks.length > 0 ? (
                                 profile.purchaseBooks.map(book => {
                                     return (
-                                        <div key={book.id} className="col-md-6 mb-4">
+                                        <div key={book._id} className="col-md-6 mb-4">
                                             <div className="card h-100 shadow-lg bg-white rounded dark:bg-gray-800 dark:text-white">
                                                 <figure>
                                                     <img
@@ -88,21 +95,21 @@ const Profile = () => {
                                                     />
                                                 </figure>
                                                 <div className="card-body">
-                                                    <p className="">Name: <span className="badge rounded-pill text-bg-info">{book.name || 'No Name'}</span></p>
-                                                    <p className="">Title: <span className="badge rounded-pill text-bg-info">{book.title || 'No Title'}</span></p>
+                                                    <p className=""><span className="badge rounded-pill text-bg-info">{book.name || 'No Name'}</span></p>
+                                                    <p className=""><span className="badge rounded-pill text-bg-info">{book.title || 'No Title'}</span></p>
                                                     <div className="text-right">
                                                         <span className="badge rounded-pill text-bg-info">${book.price || '0.00'}</span>
                                                     </div>
                                                     <div className="card-actions mt-3">
                                                         <button
                                                             className="btn btn-primary m-2 btn-block"
-                                                            onClick={() => handleBooksView(book.id)}
+                                                            onClick={() => handleBooksView(book._id)}
                                                         >
                                                             View
                                                         </button>
                                                         <button
                                                             className="btn btn-primary btn-block"
-                                                            onClick={() => handleBooksDownload(book.id)}
+                                                            onClick={() => handleBooksDownload(book._id)}
                                                         >
                                                             Download Book
                                                         </button>

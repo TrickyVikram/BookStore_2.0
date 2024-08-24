@@ -15,3 +15,7 @@ export const logout = () => {
     localStorage.removeItem('token');
     
 };
+
+export const getBookById = (id) => {
+    return axios.get(`/api/books/${id}`);
+};

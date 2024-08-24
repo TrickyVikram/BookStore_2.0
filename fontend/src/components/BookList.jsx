@@ -53,6 +53,14 @@ const BookList = () => {
     //     }
     // };
 
+    const handleBooksDownload = (bookId) => {
+        if (bookId) {
+            console.log('Download book with id:', bookId);
+            alert(`Download book with id: ${bookId}`);
+        } else {
+            alert('Book ID is undefined.');
+        }
+    };
     const handleBooksView = (bookId) => {
         if (bookId) {
             alert(`View book with id: ${bookId}`);
@@ -67,39 +75,37 @@ const BookList = () => {
             <div className="row">
                 {filterData.map(book => (
                     <div key={book._id} className="col-md-4 mb-4">
-                        <div className="card h-100 shadow-lg border-0 transform hover:scale-105 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 rounded-lg overflow-hidden">
-                            <figure className="m-0">
-                                <img
-                                    src={book.image}
-                                    alt="Book"
-                                    className="card-img-top transition-transform duration-300 hover:scale-110"
-                                    style={{ height: '300px', objectFit: 'cover' }}
-                                />
-                            </figure>
-                            <div className="card-body p-4">
-                                <h5 className="card-title text-truncate">
-                                    {book.name}
-                                    <span className="badge badge-pill badge-secondary ml-2">{book.category}</span>
-                                </h5>
-                                <p className="card-text text-muted">{book.title}</p>
-                                <div className="mb-3 font-weight-bold">${book.price}</div>
-                                {purchasedBookId === book._id && (
-                                    <div className="alert alert-success mt-3 animate__animated animate__fadeIn" role="alert">
-                                        Book purchased successfully!
-                                    </div>
-                                )}
-
-                                <div className="card-actions mt-3">
-                                    <button
-                                        className="btn btn-primary m-2 btn-block"
-                                        onClick={() => handleBooksView(book.id)}
-                                    >
-                                        View
-                                    </button>
-
-                                </div>
-                            </div>
-                        </div>
+                         <div className="card h-100 shadow-lg bg-white rounded dark:bg-gray-800 dark:text-white">
+                                                <figure>
+                                                    <img
+                                                        src={book.image || "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg"}
+                                                        alt={book.title || 'Book Image'}
+                                                        className="card-img-top mx-auto"
+                                                        style={{ height: '300px', objectFit: 'cover' }}
+                                                    />
+                                                </figure>
+                                                <div className="card-body">
+                                                    <p className="">Name: <span className="badge rounded-pill text-bg-info">{book.name || 'No Name'}</span></p>
+                                                    <p className="">Title: <span className="badge rounded-pill text-bg-info">{book.title || 'No Title'}</span></p>
+                                                    <div className="text-right">
+                                                        <span className="badge rounded-pill text-bg-info">${book.price || '0.00'}</span>
+                                                    </div>
+                                                    <div className="card-actions mt-3">
+                                                        <button
+                                                            className="btn btn-primary m-2 btn-block"
+                                                            onClick={() => handleBooksView(book.id)}
+                                                        >
+                                                            View
+                                                        </button>
+                                                        <button
+                                                            className="btn btn-primary btn-block"
+                                                            onClick={() => handleBooksDownload(book.id)}
+                                                        >
+                                                            Download Book
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                     </div>
                 ))}
             </div>
