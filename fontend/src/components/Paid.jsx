@@ -6,7 +6,7 @@ import 'animate.css/animate.min.css';
 import React, { useState, useEffect } from 'react';
 import { getBooks, purchaseBook } from '../api/api';
 
-const BookList = () => {
+const Paid = () => {
     const [books, setBooks] = useState([]);
     const [purchasedBookId, setPurchasedBookId] = useState(null);
 
@@ -70,4 +70,4 @@ const BookList = () => {
     );
 };
 
-export default BookList;
+export default Paid;

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getProfile } from '../api/api';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
     const [profile, setProfile] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getProfile()
@@ -10,13 +12,15 @@ const Profile = () => {
                 console.log('Profile data:', response.data); // Log profile data
                 setProfile(response.data);
             })
-            .catch(error => console.error(error));
-    }, []);
+            .catch(error => {
+                console.error('Error fetching profile', error);
+                navigate('/login'); // Redirect to login page if fetching profile fails
+            });
+    }, [navigate]);
 
     const handleBooksView = (bookId) => {
         if (bookId) {
             alert(`View book with id: ${bookId}`);
-            
         } else {
             alert('Book ID is undefined.');
         }

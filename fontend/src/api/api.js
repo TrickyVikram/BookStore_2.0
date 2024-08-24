@@ -11,4 +11,7 @@ export const getProfile = () => API.get('/users/profile', { headers: { Authoriza
 export const purchaseBook = (bookId) => API.post('/users/purchase', { bookId }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
 export const getBooks = () => API.get('/books');
 export const getBook = (id) => API.get(`/books/${id}`);
-
+export const logout = () => {
+    localStorage.removeItem('token');
+    
+};

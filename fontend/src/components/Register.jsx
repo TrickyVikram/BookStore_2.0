@@ -65,6 +65,7 @@ const Register = () => {
                         id="phone"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
+                        required
                     />
                 </div>
                 <div className="form-group">
@@ -75,6 +76,7 @@ const Register = () => {
                         id="address"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
+                        required
                     />
                 </div>
                 <button type="submit" className="btn btn-primary">Register</button>
