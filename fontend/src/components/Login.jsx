@@ -14,14 +14,16 @@ const Login = () => {
             localStorage.setItem('token', response.data.token);
 
             // Debugging logs
-            console.log('Token stored:', response.data.token); 
+            console.log('Token stored:', response.data.token);
             console.log('Login successful, navigating to profile');
-            
+
             navigate('/profile');
             // window.location.assign('/profile'); // Redirect to profile page
             window.location.reload(); // Refresh the page
         } catch (error) {
-            console.error('Login failed', error);
+
+            alert(`Login failed: ${error.message}`);
+            navigate('/register');
         }
     };
 
@@ -51,7 +53,7 @@ const Login = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Login</button>
+                <button type="submit" className="btn btn-primary mt-2">Login</button>
             </form>
         </div>
     );

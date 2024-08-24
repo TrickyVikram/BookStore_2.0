@@ -6,6 +6,10 @@ import Register from './components/Register';
 import Profile from './components/Profile';
 import Navbar from './components/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Paid from './components/Paid';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const App = () => {
     const isLoggedIn = !!localStorage.getItem('token');
@@ -21,6 +25,7 @@ const App = () => {
                     {isLoggedIn ? (
                         <>
                             <Route path="/profile" element={<Profile />} />
+                            <Route path="/course" element={<Paid />} />
                             <Route path="/logout" element={<div>Logging out...</div>} />
                         </>
                     ) : (

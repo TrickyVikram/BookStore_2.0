@@ -25,12 +25,12 @@ const Paid = () => {
             console.error('Error purchasing book', error);
         }
     };
-
+    const filterData = books.filter((item) => item.category === "Paid")
     return (
         <div className="container mt-5">
             <h2 className="mb-4 text-center">Book List</h2>
             <div className="row">
-                {books.map(book => (
+                {filterData.map(book => (
                     <div key={book._id} className="col-md-4 mb-4">
                         <div className="card h-100 shadow-lg border-0 transform hover:scale-105 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 rounded-lg overflow-hidden">
                             <figure className="m-0">

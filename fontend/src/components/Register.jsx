@@ -16,7 +16,8 @@ const Register = () => {
             await register({ name, email, password, phone, address });
             navigate('/login');
         } catch (error) {
-            console.error('Registration failed', error);
+            alert(` register failed: ${error.message}`);
+            navigate('/')
         }
     };
 
@@ -79,7 +80,7 @@ const Register = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Register</button>
+                <button type="submit" className="btn btn-primary mt-2 ">Register</button>
             </form>
         </div>
     );
