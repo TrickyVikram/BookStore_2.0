@@ -13,8 +13,8 @@ let localData = [
     },
     {
         "id": "2",
-        "title": "The Secret Garden",
-        "name": "Fantasy",
+        "title": "The Secret Computer",
+        "name": "Computer",
         "price": 6,
         "category": "Free",
         "image": "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg?t=st=1722311756~exp=1722315356~hmac=d7bb0fb4f59fdfb76d1eef9ff64f2a0abf390427e0e6b2b9d6b1acfae22027c5&w=740"
@@ -75,37 +75,41 @@ const BookList = () => {
             <div className="row">
                 {filterData.map(book => (
                     <div key={book._id} className="col-md-4 mb-4">
-                         <div className="card h-100 shadow-lg bg-white rounded dark:bg-gray-800 dark:text-white">
-                                                <figure>
-                                                    <img
-                                                        src={book.image || "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg"}
-                                                        alt={book.title || 'Book Image'}
-                                                        className="card-img-top mx-auto"
-                                                        style={{ height: '300px', objectFit: 'cover' }}
-                                                    />
-                                                </figure>
-                                                <div className="card-body">
-                                                    <p className="">Name: <span className="badge rounded-pill text-bg-info">{book.name || 'No Name'}</span></p>
-                                                    <p className="">Title: <span className="badge rounded-pill text-bg-info">{book.title || 'No Title'}</span></p>
-                                                    <div className="text-right">
-                                                        <span className="badge rounded-pill text-bg-info">${book.price || '0.00'}</span>
-                                                    </div>
-                                                    <div className="card-actions mt-3">
-                                                        <button
-                                                            className="btn btn-primary m-2 btn-block"
-                                                            onClick={() => handleBooksView(book.id)}
-                                                        >
-                                                            View
-                                                        </button>
-                                                        <button
-                                                            className="btn btn-primary btn-block"
-                                                            onClick={() => handleBooksDownload(book.id)}
-                                                        >
-                                                            Download Book
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                        <div className="card h-100 shadow-lg border-0 transform hover:scale-105 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 rounded-lg overflow-hidden">
+                            <figure className="m-0">
+                                <img
+                                    src={book.image}
+                                    alt={book.name}
+                                    className="card-img-top transition-transform duration-300 hover:scale-110"
+                                    style={{ height: '300px', objectFit: 'cover', border: '1px solid red' }} // Debug: Add border for visibility
+                                />
+                            </figure>
+                            <div className="card-body p-4">
+                                <h5 className="card-title text-truncate">
+                                    {book.name}
+
+                                </h5>
+
+
+                                <p className=""><span className="badge rounded-pill text-bg-info">{book.title || 'No Title'}</span></p>
+                                <span className="card-text text-muted">{book.category}</span>
+                                <div className="card-actions mt-3">
+                                    <button
+                                        className="btn btn-primary m-2 btn-block"
+                                        onClick={() => handleBooksView(book._id)}
+                                    >
+                                        View
+                                    </button>
+                                    <button
+                                        className="btn btn-primary btn-block"
+                                        onClick={() => handleBooksDownload(book._id)}
+                                    >
+                                        Download Book
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>
