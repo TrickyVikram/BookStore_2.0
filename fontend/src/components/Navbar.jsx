@@ -24,7 +24,7 @@ const Navbar = ({ isLoggedIn }) => {
                     {isLoggedIn ? (
                         <>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/course">Courses</Link>
+                                <Link className="nav-link" to="/paid">Buy Now</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/profile">Profile</Link>
@@ -39,6 +39,9 @@ const Navbar = ({ isLoggedIn }) => {
                         </>
                     ) : (
                         <>
+                            <li className="nav-item">
+                                <Link className="nav-link" to="/login">Buy</Link>
+                            </li>
                             <li className="nav-item">
                                 <Link className="nav-link" to="/login">Login</Link>
                             </li>

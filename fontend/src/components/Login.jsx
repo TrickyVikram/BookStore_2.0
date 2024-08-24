@@ -17,7 +17,7 @@ const Login = () => {
             console.log('Token stored:', response.data.token);
             console.log('Login successful, navigating to profile');
 
-            navigate('/profile');
+            navigate('/');
             // window.location.assign('/profile'); // Redirect to profile page
             window.location.reload(); // Refresh the page
         } catch (error) {

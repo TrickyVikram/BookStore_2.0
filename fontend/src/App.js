@@ -25,7 +25,7 @@ const App = () => {
                     {isLoggedIn ? (
                         <>
                             <Route path="/profile" element={<Profile />} />
-                            <Route path="/course" element={<Paid />} />
+                            <Route path="/paid" element={<Paid />} />
                             <Route path="/logout" element={<div>Logging out...</div>} />
                         </>
                     ) : (
