@@ -43,13 +43,21 @@ const BookList = () => {
             .catch(error => console.error(error));
     }, []);
 
-    const handlePurchase = async (bookId) => {
-        try {
-            await purchaseBook(bookId);
-            setPurchasedBookId(bookId);
-            setTimeout(() => setPurchasedBookId(null), 3000);
-        } catch (error) {
-            console.error('Error purchasing book', error);
+    // const handlePurchase = async (bookId) => {
+    //     try {
+    //         await purchaseBook(bookId);
+    //         setPurchasedBookId(bookId);
+    //         setTimeout(() => setPurchasedBookId(null), 3000);
+    //     } catch (error) {
+    //         console.error('Error purchasing book', error);
+    //     }
+    // };
+
+    const handleBooksView = (bookId) => {
+        if (bookId) {
+            alert(`View book with id: ${bookId}`);
+        } else {
+            alert('Book ID is undefined.');
         }
     };
 
@@ -80,6 +88,16 @@ const BookList = () => {
                                         Book purchased successfully!
                                     </div>
                                 )}
+
+                                <div className="card-actions mt-3">
+                                    <button
+                                        className="btn btn-primary m-2 btn-block"
+                                        onClick={() => handleBooksView(book.id)}
+                                    >
+                                        View
+                                    </button>
+
+                                </div>
                             </div>
                         </div>
                     </div>
