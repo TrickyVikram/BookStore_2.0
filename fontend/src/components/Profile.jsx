@@ -1,33 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import { getProfile } from '../api/api';
+import { getProfile, updateProfile } from '../api/api';
 import { useNavigate } from 'react-router-dom';
-
-
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 const Profile = () => {
     const [profile, setProfile] = useState(null);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editForm, setEditForm] = useState({ name: '', phone: '', address: '', image: '' });
     const navigate = useNavigate();
 
-
-
     useEffect(() => {
-        getProfile()
-            .then(response => {
-                console.log('Profile data:', response.data); // Log profile data
+        const fetchProfile = async () => {
+            try {
+                const response = await getProfile();
                 setProfile(response.data);
-            })
-            .catch(error => {
+                setEditForm({
+                    name: response.data.name || '',
+                    phone: response.data.phone || '',
+                    address: response.data.address || '',
+                    image: response.data.image || '',
+                });
+            } catch (error) {
                 console.error('Error fetching profile:', error);
                 navigate('/login'); // Redirect to login page if fetching profile fails
-            });
+            }
+        };
+        fetchProfile();
     }, [navigate]);
-
-    // get books in bookId according to all data 
-     //write code
 
     const handleBooksView = (bookId) => {
         if (bookId) {
-            alert(`View book with id: ${bookId}`);
+            navigate(`/books/${bookId}`); // Navigate to book details page or view logic
         } else {
             alert('Book ID is undefined.');
         }
@@ -35,10 +40,27 @@ const Profile = () => {
 
     const handleBooksDownload = (bookId) => {
         if (bookId) {
-            console.log('Download book with id:', bookId);
-            alert(`Download book with id: ${bookId}`);
+            // Implement download functionality or navigate to a download page
+            console.log('Initiating download for book with id:', bookId);
+            alert(`Download functionality for book with id: ${bookId} is not yet implemented.`);
         } else {
             alert('Book ID is undefined.');
+        }
+    };
+
+    const handleEditFormChange = (e) => {
+        const { name, value } = e.target;
+        setEditForm(prevState => ({ ...prevState, [name]: value }));
+    };
+
+    const handleEditSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await updateProfile(editForm); // Update profile via API call
+            setProfile(prevState => ({ ...prevState, ...editForm }));
+            setShowEditModal(false);
+        } catch (error) {
+            console.error('Error updating profile:', error);
         }
     };
 
@@ -72,53 +94,55 @@ const Profile = () => {
                                         <strong>Address:</strong> {profile.address || 'India'}
                                     </li>
                                 </ul>
+                                <button
+                                    className="btn btn-secondary"
+                                    onClick={() => setShowEditModal(true)}
+                                >
+                                    Edit Profile
+                                </button>
                             </div>
                         </div>
-                        
                     </div>
 
-                    {/* Scrollable Purchased Books */}
                     <div className="col-md-8" style={{ maxHeight: '600px', overflowY: 'auto' }}>
                         <h4 className="mb-4">Purchased Books</h4>
                         <div className="row">
                             {profile.purchaseBooks && profile.purchaseBooks.length > 0 ? (
-                                profile.purchaseBooks.map(book => {
-                                    return (
-                                        <div key={book._id} className="col-md-6 mb-4">
-                                            <div className="card h-100 shadow-lg bg-white rounded dark:bg-gray-800 dark:text-white">
-                                                <figure>
-                                                    <img
-                                                        src={book.image || "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg"}
-                                                        alt={book.title || 'Book Image'}
-                                                        className="card-img-top mx-auto"
-                                                        style={{ height: '300px', objectFit: 'cover' }}
-                                                    />
-                                                </figure>
-                                                <div className="card-body">
-                                                    <p className=""><span className="badge rounded-pill text-bg-info">{book.name || 'No Name'}</span></p>
-                                                    <p className=""><span className="badge rounded-pill text-bg-info">{book.title || 'No Title'}</span></p>
-                                                    <div className="text-right">
-                                                        <span className="badge rounded-pill text-bg-info">${book.price || '0.00'}</span>
-                                                    </div>
-                                                    <div className="card-actions mt-3">
-                                                        <button
-                                                            className="btn btn-primary m-2 btn-block"
-                                                            onClick={() => handleBooksView(book._id)}
-                                                        >
-                                                            View
-                                                        </button>
-                                                        <button
-                                                            className="btn btn-primary btn-block"
-                                                            onClick={() => handleBooksDownload(book._id)}
-                                                        >
-                                                            Download Book
-                                                        </button>
-                                                    </div>
+                                profile.purchaseBooks.map(book => (
+                                    <div key={book._id} className="col-md-6 mb-4">
+                                        <div className="card h-100 shadow-lg bg-white rounded dark:bg-gray-800 dark:text-white">
+                                            <figure>
+                                                <img
+                                                    src={book.image || "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg"}
+                                                    alt={book.title || 'Book Image'}
+                                                    className="card-img-top mx-auto"
+                                                    style={{ height: '300px', objectFit: 'cover' }}
+                                                />
+                                            </figure>
+                                            <div className="card-body">
+                                                <p className=""><span className="badge rounded-pill text-bg-info">{book.title || 'No Title'}</span></p>
+                                                <p className=""><span className="badge rounded-pill text-bg-info">{book.name || 'No Name'}</span></p>
+                                                <div className="text-right">
+                                                    <span className="badge rounded-pill text-bg-info">${book.price || '0.00'}</span>
+                                                </div>
+                                                <div className="card-actions mt-3">
+                                                    <button
+                                                        className="btn btn-primary m-2 btn-block"
+                                                        onClick={() => handleBooksView(book._id)}
+                                                    >
+                                                        View
+                                                    </button>
+                                                    <button
+                                                        className="btn btn-primary btn-block"
+                                                        onClick={() => handleBooksDownload(book._id)}
+                                                    >
+                                                        Download Book
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                    );
-                                })
+                                    </div>
+                                ))
                             ) : (
                                 <p>No books purchased yet.</p>
                             )}
@@ -132,6 +156,60 @@ const Profile = () => {
                     </div>
                 </div>
             )}
+
+            {/* Edit Profile Modal */}
+            <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Edit Profile</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleEditSubmit}>
+                        <Form.Group className="mb-3" controlId="formName">
+                            <Form.Label>Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="name"
+                                value={editForm.name}
+                                onChange={handleEditFormChange}
+                                placeholder="Enter your name"
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formPhone">
+                            <Form.Label>Phone</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="phone"
+                                value={editForm.phone}
+                                onChange={handleEditFormChange}
+                                placeholder="Enter your phone number"
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formAddress">
+                            <Form.Label>Address</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="address"
+                                value={editForm.address}
+                                onChange={handleEditFormChange}
+                                placeholder="Enter your address"
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3" controlId="formImage">
+                            <Form.Label>Profile Image URL</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="image"
+                                value={editForm.image}
+                                onChange={handleEditFormChange}
+                                placeholder="Enter the URL of your profile image"
+                            />
+                        </Form.Group>
+                        <Button variant="primary" type="submit" >
+                            Save Changes
+                        </Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 };

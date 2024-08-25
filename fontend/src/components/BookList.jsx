@@ -1,3 +1,4 @@
+
 import 'animate.css/animate.min.css';
 import React, { useState, useEffect } from 'react';
 import { getBooks } from '../api/api';
@@ -10,7 +11,9 @@ const localData = [
         "name": "Science Fiction",
         "price": 11,
         "category": "Free",
-        "image": "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg?t=st=1722311756~exp=1722315356~hmac=d7bb0fb4f59fdfb76d1eef9ff64f2a0abf390427e0e6b2b9d6b1acfae22027c5&w=740"
+        "view": "https://ncert.nic.in/textbook/pdf/lekl126.pdf",
+        "dwnd": "https://ncert.nic.in/textbook/pdf/lekl126.pdf",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUifnYjBMF6BemkUoGGN1SJ4smV3Aj1yrSSQ&s"
     },
     {
         "id": "2",
@@ -18,7 +21,9 @@ const localData = [
         "name": "Computer",
         "price": 6,
         "category": "Free",
-        "image": "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg?t=st=1722311756~exp=1722315356~hmac=d7bb0fb4f59fdfb76d1eef9ff64f2a0abf390427e0e6b2b9d6b1acfae22027c5&w=740"
+        "dwnd": "https://ibm.docs.delinea.com/online-help/library-isvp/pdfs/delinea/secret-server/secret-server-11.1.0.pdf",
+        "view": "https://ibm.docs.delinea.com/online-help/library-isvp/pdfs/delinea/secret-server/secret-server-11.1.0.pdf",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfymdB0iY-J9Yhbshr1lYJfWkuimQMjqUv-Q&s"
     },
     {
         "id": "3",
@@ -26,9 +31,73 @@ const localData = [
         "name": "Cooking",
         "price": 25,
         "category": "Free",
-        "image": "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg?t=st=1722311756~exp=1722315356~hmac=d7bb0fb4f59fdfb76d1eef9ff64f2a0abf390427e0e6b2b9d6b1acfae22027c5&w=740"
+        "dwnd": "https://x.rvce.edu.in/primo-explore/uploaded-files/index_htm_files/the_art_of_french_cooking_pdf.pdf",
+        "view": "https://x.rvce.edu.in/primo-explore/uploaded-files/index_htm_files/the_art_of_french_cooking_pdf.pdf",
+        "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCYaPIq4D_mlbrXrX6uZVIf6powH935s_51g&s"
     },
+    {
+        "id": "10",
+        "title": "World History Overview",
+        "name": "History",
+        "price": 18,
+        "category": "Free",
+        "dwnd": "https://publications.iowa.gov/27598/1/World%20History%201930.pdf",
+        "view": "https://publications.iowa.gov/27598/1/World%20History%201930.pdf",
+        "image": "https://images.unsplash.com/photo-1550533105-d412cbf5bfcc?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8V29ybGQlMjBIaXN0b3J5JTIwT3ZlcnZpZXd8ZW58MHx8MHx8fDA%3D"
+    },
+   
+    {
+        "id": "6",
+        "title": "Python Programming for Beginners",
+        "name": "Programming",
+        "price": 12,
+        "category": "Free",
+        "dwnd": "https://webweb.ams3.cdn.digitaloceanspaces.com/data/simmcdev.webweb.ai.in/MCAdigitalbook/PYTHON-20240629T072453Z-001/Python%20%20Practical%20Python%20Programming%20For%20Beginners%20and%20Experts%20(%20PDFDrive%20)%20(1).pdf",
+        "view": "https://webweb.ams3.cdn.digitaloceanspaces.com/data/simmcdev.webweb.ai.in/MCAdigitalbook/PYTHON-20240629T072453Z-001/Python%20%20Practical%20Python%20Programming%20For%20Beginners%20and%20Experts%20(%20PDFDrive%20)%20(1).pdf",
+        "image": "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8UHl0aG9uJTIwUHJvZ3JhbW1pbmd8ZW58MHx8MHx8fDA%3D"
+    },
+    {
+        "id": "7",
+        "title": "Human",
+        "name": "Lifestyle",
+        "price": 9,
+        "category": "Free",
+        "dwnd": "https://egyankosh.ac.in/bitstream/123456789/41687/1/Unit-3.pdf",
+        "view": "https://egyankosh.ac.in/bitstream/123456789/41687/1/Unit-3.pdf",
+        "image": "https://media.istockphoto.com/id/1455283645/photo/old-male-friends-laughing-at-park.webp?b=1&s=612x612&w=0&k=20&c=P0VoL00O5xRa8Fs-Cqdsj5vImm83NqcD72_kULo2deE="
+    },
+    {
+        "id": "8",
+        "title": "The girl ",
+        "name": "Classic",
+        "price": 5,
+        "category": "Free",
+        "dwnd": "https://ct02210097.schoolwires.net/site/handlers/filedownload.ashx?moduleinstanceid=26616&dataid=28467&FileName=The%20Great%20Gatsby.pdf",
+        "view": "https://ct02210097.schoolwires.net/site/handlers/filedownload.ashx?moduleinstanceid=26616&dataid=28467&FileName=The%20Great%20Gatsby.pdf",
+        "image": "https://media.istockphoto.com/id/1353588870/photo/young-indian-woman-on-yellow-copy-space-background-stock-photo.webp?b=1&s=612x612&w=0&k=20&c=HZ7uvm-zZHgXVJb0dmbPApghCVer5KJiUoWJxkIkYZQ="
+    }, 
+    {
+        "id": "9",
+        "title": "Data Science Handbook",
+        "name": "Data Science",
+        "price": 20,
+        "category": "Free",
+        "dwnd": "https://people.smp.uq.edu.au/DirkKroese/DSML/DSML.pdf",
+        "view": "https://people.smp.uq.edu.au/DirkKroese/DSML/DSML.pdf",
+        "image": "https://media.istockphoto.com/id/507855413/photo/e-reader-binary-bits-showing.webp?b=1&s=612x612&w=0&k=20&c=TpexGdIyguphRe84OxqoIQdxRrBM08zupUWOha7zvnc="
+    },
+    {
+        "id": "10",
+        "title": "World History Overview",
+        "name": "History",
+        "price": 18,
+        "category": "Free",
+        "dwnd": "https://publications.iowa.gov/27598/1/World%20History%201930.pdf",
+        "view": "https://publications.iowa.gov/27598/1/World%20History%201930.pdf",
+        "image": "https://images.unsplash.com/photo-1550533105-d412cbf5bfcc?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8V29ybGQlMjBIaXN0b3J5JTIwT3ZlcnZpZXd8ZW58MHx8MHx8fDA%3D"
+    }
 ];
+
 
 const BookList = () => {
     const [books, setBooks] = useState([]);
@@ -122,20 +191,22 @@ const BookList = () => {
                                     <span className="card-text text-muted">{book.category}</span>
                                     <div className="card-actions mt-3">
                                         {/* {isAuthenticated && ( */}
-                                            <>
-                                                <button
-                                                    className="btn btn-primary m-2 btn-block"
-                                                    onClick={() => handleBooksView(book.id)}
-                                                >
-                                                    View
-                                                </button>
-                                                <button
-                                                    className="btn btn-primary btn-block"
-                                                    onClick={() => handleBooksDownload(book.id)}
-                                                >
-                                                    Download Book
-                                                </button>
-                                            </>
+                                        <>
+                                            <button
+                                                className="btn btn-primary m-2 btn-block"
+                                                onClick={() => handleBooksView(book.id)}
+                                            >
+                                                <a className='nav-link' target='blank' href={book.view} >  View</a>
+
+                                            </button>
+                                            <button
+                                                className="btn btn-primary btn-block"
+                                                onClick={() => handleBooksDownload(book.id)}
+                                            >
+
+                                                <a className='nav-link' target='blank' href={book.dwnd} >Download Book</a>
+                                            </button>
+                                        </>
                                         {/* )} */}
                                     </div>
                                 </div>
