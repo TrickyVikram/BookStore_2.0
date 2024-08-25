@@ -21,7 +21,7 @@ app.use('/api/users', authRoutes);
 app.use('/api/books', bookRoutes);
 
 app.get('/', (req, res) => {
-    res.json({ message: 'api work' });
+    res.json({ message: 'Api work' });
 }); // Added closing parenthesis here
 
 const PORT = process.env.PORT || 4500;
