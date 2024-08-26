@@ -12,9 +12,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log('MongoDB connected'))
-    .catch((err) => console.error(err));
+mongoose.connect(process.env.MONGO_URI, {
+    connectTimeoutMS: 30000 // 30 seconds
+}).then(() => console.log('MongoDB connected')).catch((err) => console.error(err));
+
 
 app.use('/api/books', (req, res, next) => {
     console.log("Books API hit");
