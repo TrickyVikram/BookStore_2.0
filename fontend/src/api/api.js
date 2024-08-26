@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API = axios.create({
     // baseURL: 'http://localhost:4500/api',
-    baseURL: 'https://bookstore-backend-1.herokuapp.com/api',
+    baseURL: 'https://bookstore-2-0.onrender.com/api',
     headers: { 'Content-Type': 'application/json' },
 });
 
