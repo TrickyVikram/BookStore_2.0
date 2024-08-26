@@ -38,7 +38,7 @@ const Profile = () => {
 
     const handleBooksView = (bookId) => {
         if (bookId) {
-            navigate(`/books/${bookId}`);
+            // navigate(`/books/${bookId}`);
         } else {
             alert('Book ID is undefined.');
         }
@@ -47,7 +47,7 @@ const Profile = () => {
     const handleBooksDownload = (bookId) => {
         if (bookId) {
             console.log('Initiating download for book with id:', bookId);
-            alert(`Download functionality for book with id: ${bookId} is not yet implemented.`);
+            // alert(`Download functionality for book with id: ${bookId} is not yet implemented.`);
         } else {
             alert('Book ID is undefined.');
         }

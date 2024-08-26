@@ -52,7 +52,7 @@ const BookList = () => {
 
     const handleBooksDownload = (bookId) => {
         if (bookId) {
-            alert(`Download book with id: ${bookId}`);
+            // alert(`Download book with id: ${bookId}`);
         } else {
             alert('Book ID is undefined.');
         }
@@ -60,7 +60,7 @@ const BookList = () => {
 
     const handleBooksView = (bookId) => {
         if (bookId) {
-            alert(`View book with id: ${bookId}`);
+            // alert(`View book with id: ${bookId}`);
         } else {
             alert('Book ID is undefined.');
         }
