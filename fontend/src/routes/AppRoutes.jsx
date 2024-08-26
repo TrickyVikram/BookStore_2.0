@@ -11,8 +11,8 @@ const AppRoutes = ({ isLoggedIn }) => {
         <Routes>
             {/* Common routes */}
             <Route path="/" element={<BookList />} />
-            <Route path="*" element={<Navigate to="/" />} />
             {/* Conditional routes based on login status */}
+            <Route path="*" element={<Navigate to="/" />} />
             {isLoggedIn ? (
                 <>
                     <Route path="/profile" element={<Profile />} />
