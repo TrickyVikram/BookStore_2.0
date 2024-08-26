@@ -15,6 +15,7 @@ const Login = () => {
             console.log('Token stored:', response.data.token);
             console.log('Login successful, navigating to profile');
             navigate('/profile');
+            window.location.reload();
         } catch (error) {
             alert(`Login failed: ${error.message}`);
         }

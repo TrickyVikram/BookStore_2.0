@@ -9,10 +9,7 @@ const App = () => {
     const isLoggedIn = !!localStorage.getItem('token');
 
     return (
-        <Router
-            basename="/" // This is the base URL for the app
-            forceRefresh={false} // If true, the page will do a full refresh on page navigation
-        >
+        <Router basename="/">
             <Navbar isLoggedIn={isLoggedIn} /> {/* Pass the isLoggedIn prop */}
             <AppRoutes />
         </Router>
