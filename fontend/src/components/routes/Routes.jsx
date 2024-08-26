@@ -1,21 +1,21 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes ,BrowserRouter } from 'react-router-dom';
+import React from 'react'
+import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import BookList from './components/BookList';
 import Login from './components/Login';
 import Register from './components/Register';
 import Profile from './components/Profile';
 import Navbar from './components/Navbar';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Paid from './components/Paid';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-const App = () => {
+
+
+const Routess = () => {
     const isLoggedIn = !!localStorage.getItem('token');
+  return (
 
-    return (
-        <BrowserRouter>
-        <Router>
+    <BrowserRouter>
+    
+       <Router>
             <Navbar isLoggedIn={isLoggedIn} />
             <div className="container mt-4">
                 <Routes>
@@ -28,8 +28,9 @@ const App = () => {
                 </Routes>
             </div>
         </Router>
-        </BrowserRouter>
-    );
-};
+    </BrowserRouter>
+  
+  )
+}
 
-export default App;
+export default Routess
