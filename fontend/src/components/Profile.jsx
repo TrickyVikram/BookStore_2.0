@@ -67,7 +67,7 @@ const Profile = () => {
     return (
         <div className="container mt-5">
             <h2 className="text-center mb-4">User Profile</h2>
-            
+
             {profile ? (
                 <div className="row">
                     <div className="col-md-4">
@@ -155,6 +155,12 @@ const Profile = () => {
                         <span className="sr-only">Loading...</span>
                     </div>
                 </div>
+
+
+             
+
+
+
             )}
 
             {/* Edit Profile Modal */}
