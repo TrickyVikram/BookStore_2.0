@@ -24,7 +24,7 @@ const Profile = () => {
                 });
             } catch (error) {
                 console.error('Error fetching profile:', error);
-                navigate('/login'); // Redirect to login page if fetching profile fails
+                window.location.href = '/login'; // Redirect to login page if fetching profile fails
             }
         };
         fetchProfile();

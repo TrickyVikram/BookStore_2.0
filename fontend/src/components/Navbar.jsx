@@ -33,7 +33,7 @@ const Navbar = ({ isLoggedIn }) => {
                                 <Link className="nav-link" to="/logout" onClick={() => {
                                     localStorage.removeItem('token');
                                     window.location.reload();
-                                    window.location.href = '/';
+                                    window.location.href = '/login';
                                 }}>Logout</Link>
                             </li>
                         </>
