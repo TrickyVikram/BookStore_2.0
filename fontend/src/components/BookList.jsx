@@ -2,7 +2,7 @@ import 'animate.css/animate.min.css';
 import React, { useState, useEffect } from 'react';
 import { getBooks } from '../api/api';
 import useAuth from '../hooks/useAuth';  // Custom hook to determine authentication status
-import { CircularProgressbar } from 'react-circular-progressbar'; // Import CircularProgressBar
+
 import 'react-circular-progressbar/dist/styles.css'; // Import the styles
 
 const localData = [
