@@ -14,7 +14,13 @@ const Profile = () => {
     useEffect(() => {
         const fetchProfile = async () => {
             try {
-                const response = await getProfile();
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    navigate('/login');
+                    return;
+                }
+
+                const response = await getProfile(token);
                 setProfile(response.data);
                 setEditForm({
                     name: response.data.name || '',
@@ -24,7 +30,7 @@ const Profile = () => {
                 });
             } catch (error) {
                 console.error('Error fetching profile:', error);
-                navigate('/');
+                navigate('/login');
             }
         };
         fetchProfile();
@@ -32,7 +38,7 @@ const Profile = () => {
 
     const handleBooksView = (bookId) => {
         if (bookId) {
-            navigate(`/books/${bookId}`); // Navigate to book details page or view logic
+            navigate(`/books/${bookId}`);
         } else {
             alert('Book ID is undefined.');
         }
@@ -40,7 +46,6 @@ const Profile = () => {
 
     const handleBooksDownload = (bookId) => {
         if (bookId) {
-            // Implement download functionality or navigate to a download page
             console.log('Initiating download for book with id:', bookId);
             alert(`Download functionality for book with id: ${bookId} is not yet implemented.`);
         } else {
@@ -56,7 +61,7 @@ const Profile = () => {
     const handleEditSubmit = async (e) => {
         e.preventDefault();
         try {
-            await updateProfile(editForm); // Update profile via API call
+            await updateProfile(editForm);
             setProfile(prevState => ({ ...prevState, ...editForm }));
             setShowEditModal(false);
         } catch (error) {
@@ -155,12 +160,6 @@ const Profile = () => {
                         <span className="sr-only">Loading...</span>
                     </div>
                 </div>
-
-
-             
-
-
-
             )}
 
             {/* Edit Profile Modal */}
@@ -201,16 +200,16 @@ const Profile = () => {
                             />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formImage">
-                            <Form.Label>Profile Image URL</Form.Label>
+                            <Form.Label>Image URL</Form.Label>
                             <Form.Control
                                 type="text"
                                 name="image"
                                 value={editForm.image}
                                 onChange={handleEditFormChange}
-                                placeholder="Enter the URL of your profile image"
+                                placeholder="Enter your image URL"
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit" >
+                        <Button variant="primary" type="submit">
                             Save Changes
                         </Button>
                     </Form>
