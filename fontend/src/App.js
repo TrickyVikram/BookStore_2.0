@@ -19,7 +19,6 @@ const App = () => {
             <Navbar isLoggedIn={isLoggedIn} />
             <div className="container mt-4">
                 <Routes>
-             
                     <Route path="/" element={<BookList />} />
                     {isLoggedIn ? (
                         <>
