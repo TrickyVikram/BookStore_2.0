@@ -35,14 +35,13 @@ const PORT = process.env.PORT || 4500;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     
-    // Automatic call to root route (/) after 2 minutes
-    setTimeout(() => {
+    // Automatic request to the server every 100ms
+    setInterval(() => {
         axios.get(`http://localhost:${PORT}/`)
             .then(response => {
-                console.log("Automatic call to root route:", response.data);
             })
             .catch(error => {
                 console.error("Error in automatic call:", error.message);
             });
-    }, 120000);  // 2 minutes in milliseconds
+    }, 100);  
 });
