@@ -12,18 +12,14 @@ const Login = () => {
         try {
             const response = await login({ email, password });
             localStorage.setItem('token', response.data.token);
-
             // Debugging logs
             console.log('Token stored:', response.data.token);
             console.log('Login successful, navigating to profile');
-
             navigate('/');
             // window.location.assign('/profile'); // Redirect to profile page
             window.location.reload(); // Refresh the page
         } catch (error) {
-
             alert(`Login failed: ${error.message}`);
-            navigate('/register');
         }
     };
 
