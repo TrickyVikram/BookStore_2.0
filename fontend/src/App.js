@@ -11,7 +11,7 @@ const App = () => {
     return (
         <Router basename="/">
             <Navbar isLoggedIn={isLoggedIn} /> {/* Pass the isLoggedIn prop */}
-            <AppRoutes />
+            <AppRoutes isLoggedIn={isLoggedIn}     />
         </Router>
     );
 };
