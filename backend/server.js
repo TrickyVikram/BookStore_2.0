@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const bookRoutes = require('./routes/bookRoutes');
 const { protect } = require('./middleware/authMiddleware');
+const axios = require('axios');  // Adding axios to make the automatic request
 
 dotenv.config();
 const app = express();
@@ -16,20 +17,32 @@ mongoose.connect(process.env.MONGO_URI, {
     connectTimeoutMS: 30000 
 }).then(() => console.log('MongoDB connected')).catch((err) => console.error(err));
 
-
 app.use('/api/books', (req, res, next) => {
     console.log("Books API hit");
     next();
 }, bookRoutes);
 
 app.use('/api/users', (req, res, next) => {
-    console.log("Users API hit ");
+    console.log("Users API hit");
     next();
 }, authRoutes);
 
 app.get('/', (req, res) => {
-    res.json({ message: 'Api work' });
+    res.json({ message: 'API works' });
 });
 
 const PORT = process.env.PORT || 4500;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    
+    // Automatic call to root route (/) after 2 minutes
+    setTimeout(() => {
+        axios.get(`http://localhost:${PORT}/`)
+            .then(response => {
+                console.log("Automatic call to root route:", response.data);
+            })
+            .catch(error => {
+                console.error("Error in automatic call:", error.message);
+            });
+    }, 120000);  // 2 minutes in milliseconds
+});
