@@ -7,6 +7,8 @@ const bookRoutes = require('./routes/bookRoutes');
 const { protect } = require('./middleware/authMiddleware');
 const axios = require('axios');  // Adding axios to make the automatic request
 
+
+
 dotenv.config();
 const app = express();
 
@@ -36,12 +38,12 @@ app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
     
     // Automatic request to the server every 100ms
-    setInterval(() => {
-        axios.get(`http://localhost:${PORT}/`)
-            .then(response => {
-            })
-            .catch(error => {
-                console.error("Error in automatic call:", error.message);
-            });
-    }, 100);  
+    // setInterval(() => {
+    //     axios.get(`http://localhost:${PORT}/`)
+    //         .then(response => {
+    //         })
+    //         .catch(error => {
+    //             console.error("Error in automatic call:", error.message);
+    //         });
+    // }, 100);  
 });
