@@ -20,6 +20,7 @@ const Login = () => {
             window.location.reload(); // Refresh the page
         } catch (error) {
             alert(`Login failed: ${error.message}`);
+            
         }
     };
 
