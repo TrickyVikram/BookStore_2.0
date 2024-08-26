@@ -12,26 +12,19 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const App = () => {
     const isLoggedIn = !!localStorage.getItem('token');
-    
+
     return (
-        
+
         <Router>
-            <Navbar isLoggedIn={isLoggedIn}/>
+            <Navbar isLoggedIn={isLoggedIn} />
             <div className="container mt-4">
                 <Routes>
                     <Route path="/" element={<BookList />} />
-                    {isLoggedIn ? (
-                        <>
-                            <Route path="/profile" element={<Profile />} />
-                            <Route path="/paid" element={<Paid />} />
-                            <Route path="/logout" element={<div>Logging out...</div>} />
-                        </>
-                    ) : (
-                        <>
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/register" element={<Register />} />
-                        </>
-                    )}
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/paid" element={<Paid />} />
+                    <Route path="/logout" element={<div>Logging out...</div>} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
                 </Routes>
             </div>
         </Router>
