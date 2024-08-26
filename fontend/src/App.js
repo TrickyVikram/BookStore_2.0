@@ -10,10 +10,10 @@ const App = () => {
 
     return (
         <Router
-            basename="/"
-            forceRefresh={false}
+            basename="/" // This is the base URL for the app
+            forceRefresh={false} // If true, the page will do a full refresh on page navigation
         >
-            <Navbar isLoggedIn={isLoggedIn} />
+            <Navbar isLoggedIn={isLoggedIn} /> {/* Pass the isLoggedIn prop */}
             <AppRoutes />
         </Router>
     );
