@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const API = axios.create({
-    // baseURL: 'http://localhost:4500/api',
-    baseURL: 'https://bookstore-2-0.onrender.com/api/',
+    baseURL:'http://localhost:4500/api/',
+    // baseURL: 'https://bookstore-2-0.onrender.com/api/',
     headers: { 'Content-Type': 'application/json' },
 });
 
@@ -14,19 +14,23 @@ export const getBooks = () => API.get('/books');
 export const getBook = (id) => API.get(`/books/${id}`);
 export const logout = () => {
     localStorage.removeItem('token');
-    
 };
 
-export const getBookById = (id) => {
-    return axios.get(`/api/books/${id}`);
+// Function to update user profile
+export const updateProfile = async (formData) => {
+    try {
+        const response = await API.put('/users/update', formData, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                'Content-Type': 'multipart/form-data',
+            }
+        });
+        return  response.data
+    } catch (error) {
+        console.error('Error updating profile:', error);
+        throw error; // Optional: re-throw the error to handle it in the calling code
+    }
 };
 
-export const updateProfile = async (profileData) => {
-    alert(profileData)
-    const response = await axios.put(`${API}/users/update`, profileData, {
-        headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-    });
-    return response.data;
-};
+
+

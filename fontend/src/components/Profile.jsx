@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { getProfile, updateProfile } from '../api/api';
+import { getProfile } from '../api/api';  // Ensure this is the correct API import
 import { useNavigate } from 'react-router-dom';
-import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import EditProfile from './EditProfile';  // Import the EditProfile component
 
 const Profile = () => {
     const [profile, setProfile] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [editForm, setEditForm] = useState({ name: '', phone: '', address: '', image: '' });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -22,12 +20,6 @@ const Profile = () => {
 
                 const response = await getProfile(token);
                 setProfile(response.data);
-                setEditForm({
-                    name: response.data.name || '',
-                    phone: response.data.phone || '',
-                    address: response.data.address || '',
-                    image: response.data.image || '',
-                });
             } catch (error) {
                 console.error('Error fetching profile:', error);
                 navigate('/login');
@@ -38,7 +30,7 @@ const Profile = () => {
 
     const handleBooksView = (bookId) => {
         if (bookId) {
-            // navigate(`/books/${bookId}`);
+            // navigate to book details page
         } else {
             alert('Book ID is undefined.');
         }
@@ -47,26 +39,13 @@ const Profile = () => {
     const handleBooksDownload = (bookId) => {
         if (bookId) {
             console.log('Initiating download for book with id:', bookId);
-            // alert(`Download functionality for book with id: ${bookId} is not yet implemented.`);
         } else {
             alert('Book ID is undefined.');
         }
     };
 
-    const handleEditFormChange = (e) => {
-        const { name, value } = e.target;
-        setEditForm(prevState => ({ ...prevState, [name]: value }));
-    };
-
-    const handleEditSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            await updateProfile(editForm);
-            setProfile(prevState => ({ ...prevState, ...editForm }));
-            setShowEditModal(false);
-        } catch (error) {
-            console.error('Error updating profile:', error);
-        }
+    const handleEditProfile = (updatedProfile) => {
+        setProfile(prevState => ({ ...prevState, ...updatedProfile }));
     };
 
     return (
@@ -76,7 +55,7 @@ const Profile = () => {
             {profile ? (
                 <div className="row">
                     <div className="col-md-4">
-                        <div className="card shadow-lg p-4 mb-5 bg-white rounded text-center dark:bg-gray-800 dark:text-white">
+                        <div className="card shadow-lg p-4 mb-5 bg-white rounded text-center">
                             <div className="card-body">
                                 <img
                                     src={profile.image || 'https://www.pngall.com/wp-content/uploads/5/Profile-Transparent.png'}
@@ -99,23 +78,23 @@ const Profile = () => {
                                         <strong>Address:</strong> {profile.address || 'India'}
                                     </li>
                                 </ul>
-                                <button
-                                    className="btn btn-secondary"
+                                <Button
+                                    variant="secondary"
                                     onClick={() => setShowEditModal(true)}
                                 >
                                     Edit Profile
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     </div>
 
-                    <div className="col-md-8" style={{ maxHeight: '600px', overflowY: 'auto' }}>
+                    <div className="col-md-8">
                         <h4 className="mb-4">Purchased Books</h4>
                         <div className="row">
                             {profile.purchaseBooks && profile.purchaseBooks.length > 0 ? (
                                 profile.purchaseBooks.map(book => (
                                     <div key={book._id} className="col-md-6 mb-4">
-                                        <div className="card h-100 shadow-lg bg-white rounded dark:bg-gray-800 dark:text-white">
+                                        <div className="card h-100 shadow-lg bg-white rounded">
                                             <figure>
                                                 <img
                                                     src={book.image || "https://img.freepik.com/free-vector/hand-drawn-flat-design-stack-books-illustration_23-2149341898.jpg"}
@@ -141,7 +120,7 @@ const Profile = () => {
                                                         className="btn btn-primary btn-block"
                                                         onClick={() => handleBooksDownload(book._id)}
                                                     >
-                                                        Download Book
+                                                        Download
                                                     </button>
                                                 </div>
                                             </div>
@@ -149,72 +128,25 @@ const Profile = () => {
                                     </div>
                                 ))
                             ) : (
-                                <p>No books purchased yet.</p>
+                                <div className="text-center">
+                                    <h5>No purchased books available.</h5>
+                                </div>
                             )}
                         </div>
                     </div>
                 </div>
             ) : (
-                <div className="d-flex justify-content-center align-items-center">
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="sr-only">Loading...</span>
-                    </div>
+                <div className="text-center">
+                    <p>Loading profile...</p>
                 </div>
             )}
 
-            {/* Edit Profile Modal */}
-            <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Edit Profile</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={handleEditSubmit}>
-                        <Form.Group className="mb-3" controlId="formName">
-                            <Form.Label>Name</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="name"
-                                value={editForm.name}
-                                onChange={handleEditFormChange}
-                                placeholder="Enter your name"
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formPhone">
-                            <Form.Label>Phone</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="phone"
-                                value={editForm.phone}
-                                onChange={handleEditFormChange}
-                                placeholder="Enter your phone number"
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formAddress">
-                            <Form.Label>Address</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="address"
-                                value={editForm.address}
-                                onChange={handleEditFormChange}
-                                placeholder="Enter your address"
-                            />
-                        </Form.Group>
-                        <Form.Group className="mb-3" controlId="formImage">
-                            <Form.Label>Image URL</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="image"
-                                value={editForm.image}
-                                onChange={handleEditFormChange}
-                                placeholder="Enter your image URL"
-                            />
-                        </Form.Group>
-                        <Button variant="primary" type="submit">
-                            Save Changes
-                        </Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
+            <EditProfile
+                show={showEditModal}
+                onClose={() => setShowEditModal(false)}
+                profile={profile}
+                onProfileUpdate={handleEditProfile}
+            />
         </div>
     );
 };

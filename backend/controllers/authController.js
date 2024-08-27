@@ -1,11 +1,11 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 const Book = require('../models/bookModel');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
 // Register a new user
 const registerUser = async (req, res) => {
-    const { name, email, password, phone, address, image } = req.body;
+    const { name, email, password, phone, address } = req.body;
 
     try {
         const userExists = await User.findOne({ email });
@@ -14,7 +14,13 @@ const registerUser = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create({ name, email, phone, image, address, password: hashedPassword });
+        const user = await User.create({ 
+            name, 
+            email, 
+            phone, 
+            address, 
+            password: hashedPassword 
+        });
 
         res.status(201).json({
             _id: user._id,
@@ -22,7 +28,6 @@ const registerUser = async (req, res) => {
             email: user.email,
             phone: user.phone,
             address: user.address,
-            image: user.image,
             token: generateToken(user._id),
         });
     } catch (error) {
@@ -73,6 +78,43 @@ const getUserProfile = async (req, res) => {
     }
 };
 
+// Update user profile
+const updateUserProfile = async (req, res) => {
+    const { name, email, phone, address } = req.body;
+
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update user fields
+        user.name = name || user.name;
+        user.email = email || user.email;
+        user.phone = phone || user.phone;
+        user.address = address || user.address;
+
+        // If a new image is uploaded, update the image field
+        if (req.file) {
+            user.image = req.file.path;
+        }
+
+        await user.save();
+
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            address: user.address,
+            image: user.image,
+        });
+    } catch (error) {
+        console.error("Error updating profile:", error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
 // Purchase a book
 const purchaseBook = async (req, res) => {
     const { bookId } = req.body;
@@ -88,6 +130,10 @@ const purchaseBook = async (req, res) => {
             return res.status(404).json({ message: 'Book not found' });
         }
 
+        if (user.purchaseBooks.includes(book._id)) {
+            return res.status(400).json({ message: 'Book already purchased' });
+        }
+
         user.purchaseBooks.push(book._id);
         await user.save();
 
@@ -97,38 +143,15 @@ const purchaseBook = async (req, res) => {
     }
 };
 
-// Update user profile
-const updateUserProfile = async (req, res) => {
-    const { name, phone, address, image } = req.body;
-    const userId = req.user._id;
-
-    try {
-        const user = await User.findById(userId);
-        if (user) {
-            user.name = name || user.name;
-            user.phone = phone || user.phone;
-            user.address = address || user.address;
-            user.image = image || user.image;
-
-            const updatedUser = await user.save();
-            res.json({
-                _id: updatedUser._id,
-                name: updatedUser.name,
-                phone: updatedUser.phone,
-                address: updatedUser.address,
-                image: updatedUser.image,
-            });
-        } else {
-            res.status(404).json({ message: 'User not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: 'Server error' });
-    }
-};
-
 // Generate JWT token
 const generateToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '1d' });
 };
 
-module.exports = { registerUser, loginUser, getUserProfile, purchaseBook, updateUserProfile };
+module.exports = { 
+    registerUser, 
+    loginUser, 
+    getUserProfile, 
+    purchaseBook, 
+    updateUserProfile 
+};
