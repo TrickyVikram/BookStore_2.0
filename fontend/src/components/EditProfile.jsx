@@ -99,7 +99,7 @@ const EditProfile = ({ show, onClose, profile, onProfileUpdate }) => {
                             placeholder="Enter your address"
                         />
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formImage">
+                    {/* <Form.Group className="mb-3" controlId="formImage">
                         <Form.Label>Profile Image</Form.Label>
                         <Form.Control
                             type="file"
@@ -116,7 +116,7 @@ const EditProfile = ({ show, onClose, profile, onProfileUpdate }) => {
                                 />
                             </div>
                         )}
-                    </Form.Group>
+                    </Form.Group> */}
                     <Button variant="primary" type="submit">
                         Save Changes
                     </Button>
