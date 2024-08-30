@@ -80,6 +80,10 @@ const getUserProfile = async (req, res) => {
 
 // Update user profile
 const updateUserProfile = async (req, res) => {
+
+    console.log("user update controller work")
+    
+    console.log(req.body);
     const { name, email, phone, address } = req.body;
 
     try {

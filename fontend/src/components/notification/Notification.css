@@ -1,0 +1,39 @@
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #fff;
+    color: #333;
+    border-radius: 5px;
+    padding: 15px 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .notification.success {
+    border-left: 5px solid #28a745;
+  }
+  
+  .notification.error {
+    border-left: 5px solid #dc3545;
+  }
+  
+  .notification.warning {
+    border-left: 5px solid #ffc107;
+  }
+  
+  .close-btn {
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: auto;
+    color: #999;
+  }
+  
+  .close-btn:hover {
+    color: #333;
+  }
+  

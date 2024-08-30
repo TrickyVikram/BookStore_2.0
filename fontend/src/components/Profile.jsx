@@ -19,7 +19,10 @@ const Profile = () => {
                 }
 
                 const response = await getProfile(token);
+
                 setProfile(response.data);
+                
+                
             } catch (error) {
                 console.error('Error fetching profile:', error);
                 navigate('/login');
@@ -58,7 +61,7 @@ const Profile = () => {
                         <div className="card shadow-lg p-4 mb-5 bg-white rounded text-center">
                             <div className="card-body">
                                 <img
-                                    src={profile.image || 'https://www.pngall.com/wp-content/uploads/5/Profile-Transparent.png'}
+                                    src={ `http://localhost:3000/${profile.image}` || 'https://www.pngall.com/wp-content/uploads/5/Profile-Transparent.png'}
                                     alt={profile.name}
                                     className="rounded-circle"
                                     style={{ height: '150px', objectFit: 'cover', marginBottom: '20px' }}

@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI, {
-    connectTimeoutMS: 30000 
+    connectTimeoutMS: 30000
 }).then(() => console.log('MongoDB connected')).catch((err) => console.error(err));
 
 app.use('/api/books', (req, res, next) => {

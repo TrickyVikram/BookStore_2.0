@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+
+
+
 const API = axios.create({
     // baseURL:'http://localhost:4500/api/',
     baseURL: 'https://bookstore-2-0.onrender.com/api/',
@@ -17,20 +20,45 @@ export const logout = () => {
 };
 
 // Function to update user profile
+// export const updateProfile = async (formData) => {
+//     try {
+//         const response = await API.put('/users/update', formData, {
+//             headers: {
+//                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
+//                 'Content-Type': 'multipart/form-data',
+//             }
+//         });
+
+//         return  response.data
+//     } catch (error) {
+//         console.error('Error updating profile:', error);
+//         throw error; // Optional: re-throw the error to handle it in the calling code
+//     }
+// };
+
+
 export const updateProfile = async (formData) => {
-    try {
-        const response = await API.put('/users/update', formData, {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                'Content-Type': 'multipart/form-data',
-            }
-        });
-        return  response.data
-    } catch (error) {
-        console.error('Error updating profile:', error);
-        throw error; // Optional: re-throw the error to handle it in the calling code
-    }
-};
+ 
 
 
+        try {
+            // Send formData to the backend, including the image file
+                    const response = await API.put('/users/update', formData, {
+                        headers: {
+                            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                            'Content-Type': 'multipart/form-data',
+                        }
+                    });
+            
+                    return  response.data
+                } catch (error) {
+                    console.error('Error updating profile:', error);
+                    throw error; // Optional: re-throw the error to handle it in the calling code
+                }
+        
 
+        // client side(react.js) in upload the image/file to the public/ directory  
+
+
+        
+}
