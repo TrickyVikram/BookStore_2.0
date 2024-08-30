@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { getBooks } from '../api/api'; // Ensure this API call is set up correctly
+import { getBooks } from '../../api/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Sidebar.css'; // Custom CSS for additional styling
+import './Sidebar.css';
+import BookCarousel from './BookCarousel';
+import BookCard from './BookCard';
 
 const Sidebar = () => {
     const [topics, setTopics] = useState([]);
+    const [selectedBook, setSelectedBook] = useState(null);
+    const [selectedTopic, setSelectedTopic] = useState(null);
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -20,25 +24,22 @@ const Sidebar = () => {
         fetchBooks();
     }, []);
 
-    const groupByTopic = (books) => {
-        const topicsMap = {};
-
-        books.forEach((book) => {
-            if (!topicsMap[book.topic]) {
-                topicsMap[book.topic] = [];
-            }
-            topicsMap[book.topic].push(book);
-        });
-
-        return Object.entries(topicsMap).map(([topic, books]) => ({
-            topic,
-            books
+    const groupByTopic = (data) => {
+        return data.map(item => ({
+            topic: item.topic,
+            books: item.books
         }));
+    };
+
+    const handleSelectBook = (bookId) => {
+        const book = topics.flatMap(topic => topic.books).find(b => b.id === bookId);
+        setSelectedBook(book);
+        setSelectedTopic(topics.find(topic => topic.books.some(b => b.id === bookId)));
     };
 
     return (
         <div className="d-flex">
-            <nav className="sidebar bg-light p-3">
+            {/* <nav className="sidebar bg-light p-3" style={{ width: '250px' }}>
                 <h4 className="text-center mb-4">Topics</h4>
                 <div className="accordion" id="accordionTopics">
                     {topics.map((item, index) => (
@@ -63,10 +64,14 @@ const Sidebar = () => {
                             >
                                 <div className="accordion-body">
                                     <ul className="list-group">
-                                        {item.books.map((book) => (
-                                            <li key={book._id} className="list-group-item">
-                                                {book.name}
-                                            </li>
+                                        {item.books.map(book => (
+                                            <button 
+                                                key={book.id}
+                                                className="list-group-item list-group-item-action"
+                                                onClick={() => handleSelectBook(book.id)}
+                                            >
+                                                <p>{book.title}</p>
+                                            </button>
                                         ))}
                                     </ul>
                                 </div>
@@ -74,10 +79,19 @@ const Sidebar = () => {
                         </div>
                     ))}
                 </div>
-            </nav>
-            <div className="content p-4">
-                {/* Main content area for displaying book details */}
-                <h2 className="text-center">Select a topic to view books</h2>
+            </nav> */}
+
+            <div className="content p-4" style={{ flex: 3 }}>
+                {selectedBook ? (
+                    <>
+                        <h2 className="text-center">Book: {selectedBook.title}</h2>
+                        <BookCard book={selectedBook} />
+                        <h3 className="text-center mt-4">Related Books in {selectedTopic?.topic}</h3>
+                        <BookCarousel books={selectedTopic?.books || []} />
+                    </>
+                ) : (
+                    <h2 className="text-center">Select a book to view details</h2>
+                )}
             </div>
         </div>
     );

@@ -6,6 +6,7 @@ import Register from '../components/Register';
 import Profile from '../components/Profile';
 import Paid from '../components/Paid';
 import Home from '../components/Home';
+import Sidebar from '../components/sidebar/Sidebar';
 
 const AppRoutes = ({ isLoggedIn }) => {
     return (
@@ -17,6 +18,7 @@ const AppRoutes = ({ isLoggedIn }) => {
                     <BookList />
                 </>
             } />
+            <Route path="/sidebar" element={<Sidebar/>} />
 
 
             <Route path="*" element={<Navigate to="/" />} />
