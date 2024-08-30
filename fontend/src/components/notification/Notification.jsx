@@ -1,29 +1,24 @@
-import React, { useState, useEffect } from "react";
-import "./Notification.css"; 
+import React from "react";
+import BookCarousel from "./BookCarousel";
+import "./Notification.css";
 
-const Notification = ({ message, type, duration = 3000, onClose }) => {
-  const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setVisible(false);
-      if (onClose) {
-        onClose();
-      }
-    }, duration);
 
-    return () => clearTimeout(timer);
-  }, [duration, onClose]);
-
-  if (!visible) return null;
+const Notification = () => {
+  const purchasedBookId = false; // Replace 'true' with the actual value or condition
 
   return (
-    <div className={`notification ${type}`}>
-      <span>{message}</span>
-      <button className="close-btn" onClick={() => setVisible(false)}>
-        &times;
-      </button>
-    </div>
+    <>
+      <div className="notification-container">
+        {/* Use the carousel component inside the notification */}
+        <BookCarousel />
+      </div>
+      { purchasedBookId && (
+        <div className="notification-container1">
+          <p>Book purchased successfully!</p>
+        </div>
+      )}
+    </>
   );
 };
 

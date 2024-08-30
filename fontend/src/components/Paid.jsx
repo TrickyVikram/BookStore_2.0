@@ -1,12 +1,14 @@
 import 'animate.css/animate.min.css';
 import React, { useState, useEffect } from 'react';
 import { getBooks, purchaseBook } from '../api/api';
+import Notification from './notification/Notification';
 
 const Paid = () => {
     const [books, setBooks] = useState([]);
     const [purchasedBookId, setPurchasedBookId] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredBooks, setFilteredBooks] = useState([]);
+    const [showNotification, setShowNotification] = useState(false);
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -38,7 +40,11 @@ const Paid = () => {
         try {
             await purchaseBook(bookId);
             setPurchasedBookId(bookId);
-            setTimeout(() => setPurchasedBookId(null), 3000);
+            setShowNotification(true);
+            setTimeout(() => {
+                setPurchasedBookId(null) ;
+                setShowNotification(false);
+             }, 3000);
         } catch (error) {
             console.error('Error purchasing book:', error);
         }
@@ -93,6 +99,7 @@ const Paid = () => {
                                             Book purchased successfully!
                                         </div>
                                     )}
+                                    {showNotification && <Notification />}
                                 </div>
                             </div>
                         </div>

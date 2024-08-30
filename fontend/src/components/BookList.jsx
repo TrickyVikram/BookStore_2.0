@@ -34,7 +34,9 @@ const BookList = () => {
 
     useEffect(() => {
         filterBooks(books);
-    }, [searchQuery, books, isAuthenticated]);
+    }, 
+    [searchQuery, books, isAuthenticated]
+);
 
     const filterBooks = (booksData) => {
         let filteredBooks;
@@ -50,21 +52,21 @@ const BookList = () => {
         setFilterData(searchFilteredBooks);
     };
 
-    const handleBooksDownload = (bookId) => {
-        if (bookId) {
-            // alert(`Download book with id: ${bookId}`);
-        } else {
-            alert('Book ID is undefined.');
-        }
-    };
+    // const handleBooksDownload = (bookId) => {
+    //     if (bookId) {
+    //         // alert(`Download book with id: ${bookId}`);
+    //     } else {
+    //         alert('Book ID is undefined.');
+    //     }
+    // };
 
-    const handleBooksView = (bookId) => {
-        if (bookId) {
-            // alert(`View book with id: ${bookId}`);
-        } else {
-            alert('Book ID is undefined.');
-        }
-    };
+    // const handleBooksView = (bookId) => {
+    //     if (bookId) {
+    //         // alert(`View book with id: ${bookId}`);
+    //     } else {
+    //         alert('Book ID is undefined.');
+    //     }
+    // };
 
     return (
         <div className="container mt-5">
