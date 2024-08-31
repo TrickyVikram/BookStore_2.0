@@ -32,16 +32,6 @@
 }
 
 .list-group-item:hover {
-    background-color: #f8f9fa;
+    background-color: #28a745; /* Green background color on hover */
+    color: white; /* White text color to contrast with the green background */
 }
-
-/* Sidebar.css */
-.sidebar {
-    height: 100vh; /* Make sidebar full height */
-    overflow-y: auto; /* Allow scrolling if content overflows */
-}
-
-.content {
-    flex: 1; /* Make content take up the remaining space */
-}
-

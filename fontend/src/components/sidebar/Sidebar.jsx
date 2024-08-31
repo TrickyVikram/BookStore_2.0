@@ -2,20 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { getBooks } from '../../api/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Sidebar.css';
-import BookCarousel from './BookCarousel';
-import BookCard from './BookCard';
 
 const Sidebar = () => {
     const [topics, setTopics] = useState([]);
-    const [selectedBook, setSelectedBook] = useState(null);
-    const [selectedTopic, setSelectedTopic] = useState(null);
 
     useEffect(() => {
         const fetchBooks = async () => {
             try {
                 const response = await getBooks();
-                const groupedBooks = groupByTopic(response.data);
-                setTopics(groupedBooks);
+                if (response.data && Array.isArray(response.data)) {
+                    const topicArray = response.data.map(item => ({
+                        topic: item.topic,
+                        books: Object.keys(item.books).map(key => ({
+                            id: key,
+                            ...item.books[key]
+                        }))
+                    }));
+                    setTopics(topicArray);
+                } else {
+                    console.error('Invalid response format:', response.data);
+                }
             } catch (error) {
                 console.error('Error fetching books:', error);
             }
@@ -24,25 +30,17 @@ const Sidebar = () => {
         fetchBooks();
     }, []);
 
-    const groupByTopic = (data) => {
-        return data.map(item => ({
-            topic: item.topic,
-            books: item.books
-        }));
-    };
-
     const handleSelectBook = (bookId) => {
-        const book = topics.flatMap(topic => topic.books).find(b => b.id === bookId);
-        setSelectedBook(book);
-        setSelectedTopic(topics.find(topic => topic.books.some(b => b.id === bookId)));
+        const selectedBook = topics.flatMap(topic => topic.books).find(b => b.id === bookId);
+        console.log('Selected Book:', selectedBook); // for debugging or use as needed
     };
 
     return (
         <div className="d-flex">
-            {/* <nav className="sidebar bg-light p-3" style={{ width: '250px' }}>
+            <nav className="sidebar bg-light p-3" style={{ width: '250px' }}>
                 <h4 className="text-center mb-4">Topics</h4>
                 <div className="accordion" id="accordionTopics">
-                    {topics.map((item, index) => (
+                    {topics.length > 0 ? topics.map((item, index) => (
                         <div key={index} className="accordion-item mb-2">
                             <h2 className="accordion-header" id={`heading${index}`}>
                                 <button
@@ -65,34 +63,30 @@ const Sidebar = () => {
                                 <div className="accordion-body">
                                     <ul className="list-group">
                                         {item.books.map(book => (
-                                            <button 
-                                                key={book.id}
-                                                className="list-group-item list-group-item-action"
-                                                onClick={() => handleSelectBook(book.id)}
-                                            >
-                                                <p>{book.title}</p>
-                                            </button>
+                                            book.title ? (
+                                                <button 
+                                                    key={book.id}
+                                                    className="list-group-item list-group-item-action"
+                                                    onClick={() => handleSelectBook(book.id)}
+                                                >
+                                               
+                                                    <span>{book.title}</span>
+                                                </button>
+                                            ) : (
+                                                <li key={book.id} className="list-group-item">
+                                                    <span>No data available for {book.id}</span>
+                                                </li>
+                                            )
                                         ))}
                                     </ul>
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    )) : (
+                        <p className="text-center">No topics available</p>
+                    )}
                 </div>
-            </nav> */}
-
-            <div className="content p-4" style={{ flex: 3 }}>
-                {selectedBook ? (
-                    <>
-                        <h2 className="text-center">Book: {selectedBook.title}</h2>
-                        <BookCard book={selectedBook} />
-                        <h3 className="text-center mt-4">Related Books in {selectedTopic?.topic}</h3>
-                        <BookCarousel books={selectedTopic?.books || []} />
-                    </>
-                ) : (
-                    <h2 className="text-center">Select a book to view details</h2>
-                )}
-            </div>
+            </nav>
         </div>
     );
 };
