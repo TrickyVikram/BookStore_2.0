@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { getBooks } from '../../api/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Sidebar.css';
-import BookList from '../BookList';
 
 const Sidebar = () => {
     const [topics, setTopics] = useState([]);
@@ -81,7 +80,10 @@ const Sidebar = () => {
                                         ))}
                                     </ul>
                                 </div>
-                            
+                                <div>
+
+                                    data is abl
+                                </div>
                             </div>
                         </div>
                     )) : (
@@ -89,10 +91,6 @@ const Sidebar = () => {
                     )}
                 </div>
             </nav>
-
-            <div className="content p-4" style={{ flex: 3 }}>
-               <BookList/>
-            </div>
         </div>
     );
 };

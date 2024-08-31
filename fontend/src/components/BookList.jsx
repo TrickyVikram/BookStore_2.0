@@ -2,11 +2,37 @@ import 'animate.css/animate.min.css';
 import React, { useState, useEffect } from 'react';
 import { getBooks } from '../api/api';
 import useAuth from '../hooks/useAuth';  // Custom hook to determine authentication status
-
 import 'react-circular-progressbar/dist/styles.css'; // Import the styles
 
 const localData = [
-    // Local data here (same as you provided)
+    // Sample local data
+    {
+        "topic": "mathematic",
+        "books": {
+            "math1": {
+                "id": "1",
+                "title": "Higher Education 12th Books",
+                "name": "RS Aggarwal",
+                "price": 350,
+                "category": "Paid",
+                "view": "https://ncert.nic.in/textbook/pdf/lekl126.pdf",
+                "dwnd": "https://ncert.nic.in/textbook/pdf/lekl126.pdf",
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUifnYjBMF6BemkUoGGN1SJ4smV3Aj1yrSSQ&s"
+            },
+            "math2": {
+                "id": "2",
+                "title": "Basic Mathematics",
+                "name": "John Doe",
+                "price": 200,
+                "category": "Free",
+                "view": "https://example.com/view",
+                "dwnd": "https://example.com/download",
+                "image": "https://example.com/image.jpg"
+            }
+            // Add more sample books here
+        }
+    }
+    // Add more topics and books as needed
 ];
 
 const BookList = () => {
@@ -17,26 +43,36 @@ const BookList = () => {
     const { isAuthenticated } = useAuth();  // Use custom hook or context to check authentication
 
     useEffect(() => {
-        getBooks()
-            .then(response => {
-                setBooks(response.data);
-                filterBooks(response.data);
+        const fetchBooks = async () => {
+            try {
+                const response = await getBooks();
+                if (response.data && Array.isArray(response.data)) {
+                    const topicArray = response.data.map(item => ({
+                        topic: item.topic,
+                        books: Object.keys(item.books).map(key => ({
+                            id: key,
+                            ...item.books[key]
+                        }))
+                    }));
+                    setBooks(topicArray.flatMap(topic => topic.books));
+                } else {
+                    console.error('Invalid response format:', response.data);
+                    setBooks(localData.flatMap(topic => topic.books)); // Use local data as fallback
+                }
                 setLoading(false); // Data loaded, stop loading
-            })
-            .catch(error => {
-                console.error(error);
-                // Use localData as a fallback
-                setBooks(localData);
-                filterBooks(localData);
+            } catch (error) {
+                console.error('Error fetching books:', error);
+                setBooks(localData.flatMap(topic => topic.books)); // Use local data as fallback
                 setLoading(false); // Data loaded, stop loading
-            });
+            }
+        };
+
+        fetchBooks();
     }, []);
 
     useEffect(() => {
         filterBooks(books);
-    }, 
-    [searchQuery, books, isAuthenticated]
-);
+    }, [searchQuery, books, isAuthenticated]);
 
     const filterBooks = (booksData) => {
         let filteredBooks;
@@ -52,22 +88,6 @@ const BookList = () => {
         setFilterData(searchFilteredBooks);
     };
 
-    // const handleBooksDownload = (bookId) => {
-    //     if (bookId) {
-    //         // alert(`Download book with id: ${bookId}`);
-    //     } else {
-    //         alert('Book ID is undefined.');
-    //     }
-    // };
-
-    // const handleBooksView = (bookId) => {
-    //     if (bookId) {
-    //         // alert(`View book with id: ${bookId}`);
-    //     } else {
-    //         alert('Book ID is undefined.');
-    //     }
-    // };
-
     return (
         <div className="container mt-5">
             <h2 className="mb-4 text-center">Book List</h2>
@@ -82,14 +102,13 @@ const BookList = () => {
             </div>
             {loading ? (
                 <div className="d-flex justify-content-center align-items-center">
-                <div className="spinner-border text-primary" role="status">
-                    <span className="sr-only">Loading...</span>
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
                 </div>
-            </div>
-  
             ) : (
                 filterData.length === 0 ? (
-                    <div className="col-12 text-center">
+                    <div className="text-center">
                         <p>No books available matching your search criteria. Please try typing a different name or title.</p>
                     </div>
                 ) : (
@@ -102,7 +121,7 @@ const BookList = () => {
                                             src={book.image}
                                             alt={book.name}
                                             className="card-img-top transition-transform duration-300 hover:scale-110"
-                                            style={{ height: '300px', objectFit: 'cover' }} // Removed border for better aesthetics
+                                            style={{ height: '300px', objectFit: 'cover' }}
                                         />
                                     </figure>
                                     <div className="card-body p-4">
