@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getBooks } from '../../api/api';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min'; // Make sure to include Bootstrap's JavaScript
 import './Sidebar.css';
 import BookList from '../BookList';
 
@@ -38,7 +39,7 @@ const Sidebar = () => {
 
     return (
         <div className="d-flex">
-            <nav className="sidebar bg-light p-3" style={{ width: '250px' }}>
+            <nav className="sidebar card h-100 bg-light p-3" style={{ width: '250px' }}>
                 <h4 className="text-center mb-4">Topics</h4>
                 <div className="accordion" id="accordionTopics">
                     {topics.length > 0 ? topics.map((item, index) => (
@@ -70,7 +71,6 @@ const Sidebar = () => {
                                                     className="list-group-item list-group-item-action"
                                                     onClick={() => handleSelectBook(book.id)}
                                                 >
-                                               
                                                     <span>{book.title}</span>
                                                 </button>
                                             ) : (
@@ -81,7 +81,6 @@ const Sidebar = () => {
                                         ))}
                                     </ul>
                                 </div>
-                            
                             </div>
                         </div>
                     )) : (
@@ -90,8 +89,10 @@ const Sidebar = () => {
                 </div>
             </nav>
 
-            <div className="content p-4" style={{ flex: 3 }}>
-               <BookList/>
+            <div className="col-md-10">
+                <div className="card h-100 d-flex shadow-lg bg-white rounded">
+               
+                </div>
             </div>
         </div>
     );

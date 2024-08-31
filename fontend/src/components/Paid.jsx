@@ -1,6 +1,8 @@
 import 'animate.css/animate.min.css';
 import React, { useState, useEffect } from 'react';
-import { getBooks, purchaseBook } from '../api/api';
+import { getBooks, purchaseBook } from '../api/api'; // Ensure purchaseBook is imported
+import useAuth from '../hooks/useAuth';  // Custom hook to determine authentication status
+import 'react-circular-progressbar/dist/styles.css'; // Import the styles
 import Notification from './notification/Notification';
 
 const Paid = () => {
@@ -9,16 +11,30 @@ const Paid = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredBooks, setFilteredBooks] = useState([]);
     const [showNotification, setShowNotification] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const { isAuthenticated } = useAuth();  // Use custom hook or context to check authentication
 
     useEffect(() => {
         const fetchBooks = async () => {
             try {
                 const response = await getBooks();
-                setBooks(response.data);
-                // Initialize filteredBooks with "Paid" category
-                setFilteredBooks(response.data.filter((item) => item.category === "Paid"));
+                if (response.data && Array.isArray(response.data)) {
+                    const topicArray = response.data.map(item => ({
+                        topic: item.topic,
+                        books: Object.keys(item.books).map(key => ({
+                            id: key,
+                            ...item.books[key]
+                        }))
+                    }));
+                    const paidBooks = topicArray.flatMap(topic => topic.books).filter(book => book.category === "Paid");
+                    setBooks(paidBooks);
+                } else {
+                    console.error('Invalid response format:', response.data);
+                }
+                setLoading(false);
             } catch (error) {
                 console.error('Error fetching books:', error);
+                setLoading(false);
             }
         };
 
@@ -27,7 +43,6 @@ const Paid = () => {
 
     useEffect(() => {
         const filtered = books
-            .filter((item) => item.category === "Paid")
             .filter(book =>
                 book.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 book.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -37,22 +52,31 @@ const Paid = () => {
     }, [searchQuery, books]);
 
     const handlePurchase = async (bookId) => {
+    
         try {
-            await purchaseBook(bookId);
-            setPurchasedBookId(bookId);
-            setShowNotification(true);
-            setTimeout(() => {
-                setPurchasedBookId(null) ;
-                setShowNotification(false);
-             }, 3000);
+            console.log('Sending purchase request for bookId:', bookId);
+            const response = await purchaseBook(bookId);
+            console.log('Purchase response:', response);
+          
+            if (response.status === 200) {  // Check for successful response
+                setPurchasedBookId(bookId);
+                setShowNotification(true);
+                setTimeout(() => {
+                    setPurchasedBookId(null);
+                    setShowNotification(false);
+                }, 3000);
+            } else {
+                console.error('Purchase failed:', response.data);
+        
+            }
         } catch (error) {
-            console.error('Error purchasing book:', error);
+            console.error('Error purchasing book:', error.response ? error.response.data : error.message);
         }
     };
 
     return (
         <div className="container mt-5">
-            <h2 className="mb-4 text-center">Book List</h2>
+            <h2 className="mb-4 text-center">Paid Books</h2>
             <div className="mb-4">
                 <input
                     type="text"
@@ -62,50 +86,57 @@ const Paid = () => {
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </div>
-            <div className="row">
-                {filteredBooks.length === 0 ? (
-                    <div className="col-12 text-center">
-                        <p>No books available in the "Paid" category matching your search. plz type : Name or Tital  </p>
+            {loading ? (
+                <div className="d-flex justify-content-center align-items-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
+            ) : (
+                filteredBooks.length === 0 ? (
+                    <div className="text-center">
+                        <p>No books available in the "Paid" category matching your search. Please try typing a different name or title.</p>
                     </div>
                 ) : (
-                    filteredBooks.map(book => (
-                        <div key={book._id} className="col-md-4 mb-4">
-                            <div className="card h-100 shadow-lg border-0 transform hover:scale-105 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 rounded-lg overflow-hidden">
-                                <figure className="m-0">
-                                    <img
-                                        src={book.image}
-                                        alt={book.name}
-                                        className="card-img-top transition-transform duration-300 hover:scale-110"
-                                        style={{ height: '300px', objectFit: 'cover', border: '1px solid red' }} // Debug: Add border for visibility
-                                    />
-                                </figure>
-                                <div className="card-body p-4">
-                                    <h5 className="card-title text-truncate">
-                                        {book.name}
-                                       
-                                    </h5>
-                                    <p className="card-text text-muted">{book.title}</p>
-                                    <div className="mb-3 font-weight-bold">${book.price}</div>
-                                    <div className="card-actions mt-3">
-                                        <button
-                                            className="btn btn-primary btn-block"
-                                            onClick={() => handlePurchase(book._id)}
-                                        >
-                                            Buy Now
-                                        </button>
-                                    </div>
-                                    {purchasedBookId === book._id && (
-                                        <div className="alert alert-success mt-3 animate__animated animate__fadeIn" role="alert">
-                                            Book purchased successfully!
+                    <div className="row">
+                        {filteredBooks.map(book => (
+                            <div key={book.id} className="col-md-4 mb-4">
+                                <div className="card h-100 shadow-lg border-0 transform hover:scale-105 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white dark:border-gray-700 rounded-lg overflow-hidden">
+                                    <figure className="m-0">
+                                        <img
+                                            src={book.image}
+                                            alt={book.name}
+                                            className="card-img-top transition-transform duration-300 hover:scale-110"
+                                            style={{ height: '300px', objectFit: 'cover' }}
+                                        />
+                                    </figure>
+                                    <div className="card-body p-4">
+                                        <h5 className="card-title text-truncate">
+                                            {book.name}
+                                        </h5>
+                                        <p><span className="badge rounded-pill text-bg-info">{book.title || 'No Title'}</span></p>
+                                        <div className="mb-3 font-weight-bold">${book.price}</div>
+                                        <div className="card-actions mt-3">
+                                            <button
+                                                className="btn btn-success btn-block mt-2"
+                                                onClick={() => handlePurchase(book.id)}
+                                            >
+                                                Buy Now
+                                            </button>
                                         </div>
-                                    )}
-                                    {showNotification && <Notification />}
+                                        {purchasedBookId === book.id && (
+                                            <div className="alert alert-success mt-3 animate__animated animate__fadeIn" role="alert">
+                                                Book purchased successfully!
+                                            </div>
+                                        )}
+                                        {showNotification && <Notification />}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))
-                )}
-            </div>
+                        ))}
+                    </div>
+                )
+            )}
         </div>
     );
 };
